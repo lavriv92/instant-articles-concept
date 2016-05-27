@@ -31,7 +31,7 @@ class MainHandler(BaseHandler):
 class AuthLoginHandler(BaseHandler, tornado.auth.FacebookGraphMixin):
 
     @tornado.web.asynchronous
-    async def get(self):
+    def get(self):
 
         url = '{}://{}/auth/login?next={}'.format(
             self.request.protocol, self.request.host,
