@@ -1,5 +1,6 @@
 import ujson
 import logging
+
 import tornado.web
 import tornado.auth
 import tornado.escape
@@ -7,6 +8,10 @@ import tornado.gen
 
 
 class BaseHandler(tornado.web.RequestHandler):
+
+    @property
+    def db(self):
+        return self.application.database
 
     def get_current_user(self):
         user = self.get_secure_cookie('fbuser')

@@ -3,6 +3,8 @@
 import logging
 import os.path
 
+
+import peewee_async
 import tornado.ioloop
 import tornado.web
 import tornado.httpserver
@@ -34,6 +36,12 @@ class Application(tornado.web.Application):
             (r'/auth/logout', AuthLogoutHandler),
             (r'/articles', ListArticlesHandler),
         ]
+
+        self.database = peewee_async.PooledPostgresqlDatabase(
+            settings['postgres']['database'],
+            user=settings['postgres']['username'],
+            host=settings['postgres']['host']
+        )
 
         super(Application, self).__init__(routes, **app_settings)
 

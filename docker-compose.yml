@@ -3,8 +3,7 @@ services:
   db:
     image: postgres:latest
     environment:
-        POSTGRES_DB: app
-
+        POSTGRES_DB: instant_db
   articles:
     build: .
     command: python instant-articles.py -p 0.0.0.0:8888

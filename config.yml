@@ -9,5 +9,5 @@ dev:
     client_secret: 6d98a41edb6de05bc2b6085ebd1d29bf
   postgres:
     username: postgres
-    database: postgres
+    database: instant_db
     host: db
