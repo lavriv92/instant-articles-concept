@@ -3,7 +3,6 @@
 import logging
 import os.path
 
-
 import peewee_async
 import tornado.ioloop
 import tornado.web
