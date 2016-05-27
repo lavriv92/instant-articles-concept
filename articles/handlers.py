@@ -12,7 +12,6 @@ class BaseHandler(tornado.web.RequestHandler):
         user = self.get_secure_cookie('fbuser')
         if not user:
             return None
-        logging.info(user)
         return ujson.loads(user)
 
 
