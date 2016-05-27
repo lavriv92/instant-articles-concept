@@ -12,6 +12,7 @@ class BaseHandler(tornado.web.RequestHandler):
         user = self.get_secure_cookie('fbuser')
         if not user:
             return None
+        logging.info(user)
         return ujson.loads(user)
 
 
@@ -55,7 +56,7 @@ class AuthLoginHandler(BaseHandler, tornado.auth.FacebookGraphMixin):
 
     def _on_auth(self, user):
         if not user:
-            raise tornado.web.HTTPError('Authentication failed')
+            raise tornado.web.HTTPError(500, 'Authentication failed')
         self.set_secure_cookie('fbuser', ujson.dumps(user))
         self.redirect(self.get_argument('next', '/'))
 

@@ -12,6 +12,8 @@ from articles.handlers import (
 )
 from articles.settings import settings
 
+BASE_DIR = os.path.dirname(__file__)
+
 
 class Application(tornado.web.Application):
 
@@ -20,8 +22,7 @@ class Application(tornado.web.Application):
             'cookie_secret': settings['cookie_secret'],
             'xsrf_cookies': True,
             'debug': settings['debug'],
-            'template_path': os.path.join(
-                os.path.dirname(__file__), 'templates'),
+            'template_path': os.path.join(BASE_DIR, 'templates'),
             'facebook_app_id': settings['facebook']['client_id'],
             'facebook_secret': settings['facebook']['client_secret']
         }
