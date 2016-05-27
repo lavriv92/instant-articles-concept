@@ -1,5 +1,10 @@
 version: '2'
 services:
+  db:
+    image: postgres:latest
+    environment:
+        POSTGRES_DB: app
+
   articles:
     build: .
     command: python instant-articles.py -p 0.0.0.0:8888
@@ -9,3 +14,5 @@ services:
       - "8888:8888"
     extra_hosts:
       - "0.0.0.0:dev.instant-articles.com"
+    depends_on:
+      - db

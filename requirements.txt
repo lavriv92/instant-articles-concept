@@ -1,3 +1,5 @@
 tornado==4.3
 ujson==1.35
 PyYAML==3.11
+peewee-async==0.5.2
+aiopg==0.9.2
