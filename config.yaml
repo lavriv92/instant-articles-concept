@@ -1,0 +1,8 @@
+dev:
+  debug: true
+  address: 0.0.0.0
+  port: 8888
+  cookie_secret: secret
+  facebook:
+    client_id: 1219539724727839
+    client_secret: 6d98a41edb6de05bc2b6085ebd1d29bf

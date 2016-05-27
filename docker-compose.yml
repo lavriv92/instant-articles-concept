@@ -1,0 +1,11 @@
+version: '2'
+services:
+  articles:
+    build: .
+    command: python instant-articles.py -p 0.0.0.0:8888
+    volumes:
+      - .:/app
+    ports:
+      - "8888:8888"
+    extra_hosts:
+      - "0.0.0.0:dev.instant-articles.com"
