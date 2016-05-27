@@ -7,3 +7,7 @@ dev:
   facebook:
     client_id: 1219539724727839
     client_secret: 6d98a41edb6de05bc2b6085ebd1d29bf
+  postgres:
+    username: postgres
+    database: postgres
+    host: db

@@ -3,7 +3,7 @@ import yaml
 
 
 def _get_settings():
-    with(open('./config.yaml', 'r')) as f:
+    with(open('./config.yml', 'r')) as f:
         settings = yaml.load(f.read())
         return settings['dev']
 
