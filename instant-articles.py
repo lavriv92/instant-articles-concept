@@ -36,8 +36,7 @@ class Application(tornado.web.Application):
         super(Application, self).__init__(routes, **app_settings)
 
 
-if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG)
+def main():
     server = tornado.httpserver.HTTPServer(
         request_callback=Application(), xheaders=True
     )
@@ -45,3 +44,8 @@ if __name__ == '__main__':
     logging.debug('App listen on {}:{}'.format(settings['address'],
                                                settings['port']))
     tornado.ioloop.IOLoop().current().start()
+
+
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
+    main()

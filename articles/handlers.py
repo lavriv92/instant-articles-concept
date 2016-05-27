@@ -12,7 +12,7 @@ class BaseHandler(tornado.web.RequestHandler):
         user = self.get_secure_cookie('fbuser')
         if not user:
             return None
-        return ujson.dumps(user)
+        return ujson.loads(user)
 
 
 class JSONHandler(BaseHandler):
@@ -28,8 +28,9 @@ class MainHandler(BaseHandler):
         self.render('login.html')
 
 
-class AuthLoginHandler(JSONHandler, tornado.auth.FacebookGraphMixin):
+class AuthLoginHandler(BaseHandler, tornado.auth.FacebookGraphMixin):
 
+    @tornado.web.asynchronous
     async def get(self):
 
         url = '{}://{}/auth/login?next={}'.format(
@@ -46,7 +47,7 @@ class AuthLoginHandler(JSONHandler, tornado.auth.FacebookGraphMixin):
                 callback=self._on_auth
             )
             return
-        self.authorize_redirect(
+        return self.authorize_redirect(
             redirect_uri=url,
             client_id=self.settings['facebook_app_id'],
             client_secret=self.settings['facebook_secret'],
@@ -55,16 +56,15 @@ class AuthLoginHandler(JSONHandler, tornado.auth.FacebookGraphMixin):
     def _on_auth(self, user):
         if not user:
             raise tornado.web.HTTPError('Authentication failed')
-        self.set_secure_cookie('fbuser', user)
+        self.set_secure_cookie('fbuser', ujson.dumps(user))
         self.redirect(self.get_argument('next', '/'))
 
 
-class AuthLogoutHandler(JSONHandler, tornado.auth.FacebookGraphMixin):
+class AuthLogoutHandler(BaseHandler, tornado.auth.FacebookGraphMixin):
 
     async def get(self):
         self.clear_cookie('fbuser')
-        payload = {'logout': True}
-        self.write(payload)
+        self.redirect('/')
 
 
 class ListArticlesHandler(JSONHandler):

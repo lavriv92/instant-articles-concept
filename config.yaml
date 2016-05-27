@@ -3,6 +3,7 @@ dev:
   address: 0.0.0.0
   port: 8888
   cookie_secret: secret
+  auth_user_cookie_name: fbuser
   facebook:
     client_id: 1219539724727839
     client_secret: 6d98a41edb6de05bc2b6085ebd1d29bf
