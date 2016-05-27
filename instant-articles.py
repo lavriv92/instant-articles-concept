@@ -39,6 +39,7 @@ class Application(tornado.web.Application):
         self.database = peewee_async.PooledPostgresqlDatabase(
             settings['postgres']['database'],
             user=settings['postgres']['username'],
+            password=settings['postgres']['password'],
             host=settings['postgres']['host']
         )
 
