@@ -1,3 +1,5 @@
+
+import os.path
 import ujson
 import logging
 
@@ -6,8 +8,16 @@ import tornado.auth
 import tornado.escape
 import tornado.gen
 
+from articles.template_render import TemplateRenderer
+
 
 class BaseHandler(tornado.web.RequestHandler):
+
+    def __init__(self, *args, **kwargs):
+        super(BaseHandler, self).__init__(*args, **kwargs)
+        self.render_article = TemplateRenderer(
+            path=os.path.join(self.settings['template_path'], 'articles')
+        )
 
     @property
     def db(self):
@@ -52,11 +62,19 @@ class AuthLoginHandler(BaseHandler, tornado.auth.FacebookGraphMixin):
                 callback=self._on_auth
             )
             return
+        scope = ','.join([
+            'pages_manage_instant_articles',
+            'manage_pages',
+            'pages_show_list',
+            'user_managed_groups'
+        ])
+
         return self.authorize_redirect(
             redirect_uri=url,
             client_id=self.settings['facebook_app_id'],
             client_secret=self.settings['facebook_secret'],
-            extra_params={'scope': 'user_posts'})
+            extra_params={'scope': scope}
+        )
 
     def _on_auth(self, user):
         if not user:
@@ -72,17 +90,19 @@ class AuthLogoutHandler(BaseHandler, tornado.auth.FacebookGraphMixin):
         self.redirect('/')
 
 
-class ListArticlesHandler(JSONHandler):
+class ArticlesHandler(JSONHandler, tornado.auth.FacebookGraphMixin):
 
+    # @tornado.web.authenticated
     async def get(self):
-        payload = ujson.dumps({
-            'articles': [
-                {
-                    'message': 'test message 1'
-                },
-                {
-                    'message': 'Link test'
-                }
-            ]
-        })
-        self.write(payload)
+
+        data = await self.render_article('test.html', name='Ivan')
+        # accounts = await self.facebook_request(
+        #     '/me/accounts',
+        #     access_token=self.current_user['access_token']
+        # )
+        # logging.debug(accounts)
+        self.write(data)
+
+    @tornado.web.authenticated
+    async def post(self):
+        self.write('Article posted')

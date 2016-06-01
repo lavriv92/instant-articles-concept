@@ -9,7 +9,7 @@ import tornado.web
 import tornado.httpserver
 
 from articles.handlers import (
-    MainHandler, ListArticlesHandler, AuthLoginHandler, AuthLogoutHandler
+    MainHandler, ArticlesHandler, AuthLoginHandler, AuthLogoutHandler
 )
 from articles.settings import settings
 
@@ -33,7 +33,7 @@ class Application(tornado.web.Application):
             (r'/', MainHandler),
             (r'/auth/login', AuthLoginHandler),
             (r'/auth/logout', AuthLogoutHandler),
-            (r'/articles', ListArticlesHandler),
+            (r'/articles', ArticlesHandler),
         ]
 
         self.database = peewee_async.PooledPostgresqlDatabase(
